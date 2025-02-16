@@ -23,12 +23,24 @@
   }
 
   const resetQuestion = () => {
-  const droppedAnswers = currentQuestion.value.slots.flatMap(slot => slot.answer);
+    const droppedAnswers = currentQuestion.value.slots.flatMap(slot => slot.answer);
 
-  currentQuestion.value.slots.forEach(slot => (slot.answer = []));
+    currentQuestion.value.slots.forEach(slot => (slot.answer = []));
 
-  currentQuestion.value.answers.push(...droppedAnswers);
-};
+    currentQuestion.value.answers.push(...droppedAnswers);
+  };
+
+  const getSlotStyle = (slot: {
+      id: string;
+      text: string;
+      correctAnswer: string;
+      answer: never[];
+  }) => ({
+    'bg-green-50 border border-green-500 text-gray-500': slot.answer.length > 0 && slot.answer[0] === slot.correctAnswer,
+    'bg-red-100 border border-red-500 text-gray-500': slot.answer.length > 0 && slot.answer[0] !== slot.correctAnswer,
+    'border border-dashed border-2 border-purple-400 bg-purple-100 text-gray-500' : slot.answer.length === 0
+  })
+
 </script>
 
 <template>
@@ -42,7 +54,7 @@
     <div class="px-6">
       <h2 class="mb-2">Question: {{ currentQuestionIndex + 1 }}</h2>
       <div class="flex gap-1">
-        <button v-for="(question, index) in questions" 
+        <button v-for="(__, index) in questions" 
           @click="currentQuestionIndex = index"
           :class="{
             'bg-purple-700': index <= currentQuestionIndex, 
@@ -60,11 +72,7 @@
       <div 
         v-for="slot in currentQuestion.slots"
         :key="slot.id"
-        :class="{
-          'bg-green-50 border border-green-500 text-gray-500': slot.answer.length > 0 && slot.answer[0] === slot.correctAnswer,
-          'bg-red-100 border border-red-500 text-gray-500': slot.answer.length > 0 && slot.answer[0] !== slot.correctAnswer,
-          'border border-dashed border-2 border-purple-400 bg-purple-100 text-gray-500' : slot.answer.length === 0
-        }"
+        :class="getSlotStyle(slot)"
         class="w-[170px] sm:w-[200px] h-[100px] text-center flex justify-center items-center py-4 px-2 rounded-xl"
         >
           <div :class="{'flex justify-center items-center gap-4': slot.answer.length > 0}">
@@ -91,7 +99,6 @@
       </div>
     </div>
     
-
     <div class="bg-white rounded-3xl py-4 px-6">
       <h3 class=" text-base text-gray-800 text-center mb-6">{{ currentQuestion.question }}</h3>
       <VueDraggableNext 
