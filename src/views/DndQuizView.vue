@@ -32,13 +32,14 @@
 </script>
 
 <template>
-  <div class="bg-purple-50 px-2 pt-4 flex flex-col justify-between gap-8 min-h-screen">
-    <header class="flex justify-between items-center">
+  <div class="bg-purple-50 px-2 pt-6 flex flex-col justify-between gap-8 min-h-screen">
+    <div>
+      <header class="flex justify-between items-center mb-8">
       <router-link to="/" class="border border-gray-300  px-2 py-2 rounded-2xl w-fit text-purple-800"><ArrowLeft /></router-link>
       <h2 class="text-xl font-semibold">Course Preview</h2>
       <button @click="resetQuestion" class="border border-gray-300 text-purple-800 px-2 py-2  rounded-2xl"><MessageCircleQuestion /></button>
     </header>
-    <div>
+    <div class="px-6">
       <h2 class="mb-2">Question: {{ currentQuestionIndex + 1 }}</h2>
       <div class="flex gap-1">
         <button v-for="(question, index) in questions" 
@@ -52,8 +53,8 @@
     </div>
     <div class="flex items-center mb-8">
       <button v-if="currentQuestionIndex > 0" @click="previousQuestion" class="flex text-sm gap-2"><ArrowLeft/> Previous</button>
-      <h3 class=" text-base text-gray-800 text-center flex-1 ">{{ currentQuestion.question }}</h3>
-      
+      <h3 class=" text-base text-gray-800 text-center flex-1">{{ currentQuestion.question }}</h3>
+    </div>
     </div>
     <div class="h-fit flex justify-center flex-wrap max-w-[700px] mx-auto gap-4">
       <div 
